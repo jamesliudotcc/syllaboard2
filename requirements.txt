@@ -1,0 +1,16 @@
+email_validator
+Flask
+Flask-Bootstrap
+Flask-JSON
+Flask-JWT-extended
+Flask-Migrate
+Flask-Shell-ipython
+Flask-SQLAlchemy
+Flask-WTF
+Itsdangerous
+Mypy
+Python-dotenv
+SQLAlchemy
+Werkzeug
+Black
+Pylint
