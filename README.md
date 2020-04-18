@@ -64,7 +64,7 @@ flask db upgrade
   - [ ] Admins model created
 
 - [ ] Cleanup
-  - [ ] Import most things when `flash shell`
+  - [ ] Import most things when `flask shell`
   - [ ] JSON for default errors instead of HTML
 
 - [ ] Testing

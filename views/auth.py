@@ -60,6 +60,8 @@ def register():
 
     email = request.json.get("email", None)
     password = request.json.get("password", None)
+    first_name = request.json.get("firstName", None)
+    last_name = request.json.get("lastName", None)
 
     if not email or not password:
         return {"msg": "Bady formed JSON request"}, 400
