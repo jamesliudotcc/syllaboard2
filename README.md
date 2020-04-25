@@ -50,8 +50,11 @@ flask db upgrade
   - [ ] Deliverable
 
 - [ ] Admin
-  - [ ] Users
+  - [ ] ~~Users~~
   - [ ] Cohorts
+    - [ ] Create cohort
+    - [ ] Assign instructor to cohort
+    - [ ] Assign student to cohort
 
 - [ ] Student
   - [ ] Deliverable
