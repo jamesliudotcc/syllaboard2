@@ -5,6 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
 from views.auth import auth_blueprint
+from views.user import user_blueprint
 from config import Config
 from app.models import db
 
@@ -26,6 +27,7 @@ def register_extensions(app):
 
 def register_blueprints(app):
     app.register_blueprint(auth_blueprint, url_prefix="/auth")
+    app.register_blueprint(user_blueprint, url_prefix="/user")
 
 
 app = create_app()

@@ -29,7 +29,7 @@ flask db upgrade
 - [ ] Models
   - [x] Create a design schematic
   - [x] Set up SQLalchemy
-    - [x] **NEXT** Set up hashing: https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-v-user-logins
+    - [x] Set up hashing: https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-v-user-logins
   - [x] Set up migrations
   - [x] For now, just use SQLite
   - [ ] Set up PostgreSQL or cloud Cockroach
@@ -41,8 +41,10 @@ flask db upgrade
     - [x] Login
     - [x] Signup
     - [ ] New PW
+      - Must be logged in, must provide correct password.
+      - Passwords match to be verified on front-end.
     - [x] Logout is on client side: delete the token.
-  - [ ] Auth model created
+  - [x] Auth model created
 
 - [ ] Instructor
   - [ ] Assignment
@@ -50,7 +52,9 @@ flask db upgrade
   - [ ] Deliverable
 
 - [ ] Admin
-  - [ ] ~~Users~~
+  - [ ] Users
+    - [ ] Create one time password
+    - [ ] Create a celery task to wait 15 minutes and invalidate that pw
   - [ ] Cohorts
     - [ ] Create cohort
     - [ ] Assign instructor to cohort
@@ -72,8 +76,20 @@ flask db upgrade
 
 - [ ] Testing
   - [ ] Have tests https://tavern.readthedocs.io/en/latest/examples.html
-  - [ ] 
 
 - [ ] Deploy
   - [ ] Build to a Docker image
   - [ ] Run with Docker Compose using a Postgres
+
+  **Really next** 
+
+- [ ] First user is always created admin. After, users can be made
+  admin only by an admin. Duh.
+- [ ] Cohort create route (/cohort/ POST) receives a json likes so:
+```json
+{
+  instructors: [1, 2],
+  students: [3, 4, 5],
+}
+```
+- [ ] (/cohort GET) should be paginated.

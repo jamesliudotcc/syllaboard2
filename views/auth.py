@@ -60,8 +60,8 @@ def register():
 
     email = request.json.get("email", None)
     password = request.json.get("password", None)
-    first_name = request.json.get("firstName", None)
-    last_name = request.json.get("lastName", None)
+    first_name = request.json.get("first_name", None)
+    last_name = request.json.get("last_name", None)
 
     if not email or not password:
         return {"msg": "Bady formed JSON request"}, 400
@@ -75,8 +75,12 @@ def register():
     if User.query.filter_by(email=email).first():
         return {"msg": "User already exists with that email"}, 422
 
-    user = User(email=email)
+    user = User(email=email, first_name=first_name, last_name=last_name)
     user.set_password(password)
+
+    if User.query.filter_by(is_admin=True).count() == 0:
+        user.is_admin = True
+
     db.session.add(user)
     db.session.commit()
 
