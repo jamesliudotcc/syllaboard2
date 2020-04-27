@@ -1,5 +1,11 @@
 users = [
     {
+        "email": "james@jamesliu.cc",
+        "first_name": "James",
+        "last_name": "liu",
+        "password": "password",
+    },
+    {
         "email": "echastenet0@google.fr",
         "first_name": "Eduino",
         "last_name": "Chastenet",

@@ -60,11 +60,6 @@ def register():
 
     email = request.json.get("email", None)
     password = request.json.get("password", None)
-    first_name = request.json.get("first_name", None)
-    last_name = request.json.get("last_name", None)
-
-    if not email or not password:
-        return {"msg": "Bady formed JSON request"}, 400
 
     try:
         v = validate_email(email)
@@ -72,14 +67,22 @@ def register():
     except EmailNotValidError as e:
         return {"msg": str(e)}, 422
 
+    new_user = {
+        "email": email,
+        "first_name": request.json.get("first_name", None),
+        "last_name": request.json.get("last_name", None),
+        "is_instructor": False,
+        "is_admin": False,
+    }
+
     if User.query.filter_by(email=email).first():
         return {"msg": "User already exists with that email"}, 422
 
-    user = User(email=email, first_name=first_name, last_name=last_name)
-    user.set_password(password)
-
     if User.query.filter_by(is_admin=True).count() == 0:
-        user.is_admin = True
+        new_user["is_admin"] = True
+
+    user = User(**new_user)
+    user.set_password(password)
 
     db.session.add(user)
     db.session.commit()
