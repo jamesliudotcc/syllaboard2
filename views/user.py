@@ -1,32 +1,17 @@
-from functools import wraps
-
 from flask import Blueprint, request
 from flask_json import as_json
 from flask_jwt_extended import (
     jwt_required,
     create_access_token,
     get_jwt_identity,
-    verify_jwt_in_request,
 )
 
 from email_validator import validate_email, EmailNotValidError
 
 from app.models import User, db
+from views.auth_decorators import admin_required
 
 user_blueprint = Blueprint("user_blueprint", __name__)
-
-
-def admin_required(fn):
-    @wraps(fn)
-    def wrapper(*args, **kwargs):
-        verify_jwt_in_request()
-        current_user = get_jwt_identity()
-
-        if not User.query.filter_by(email=current_user).one().is_admin:
-            return {"msg": "Not admin"}, 403
-        return fn(*args, **kwargs)
-
-    return wrapper
 
 
 @user_blueprint.route("/")
@@ -35,6 +20,9 @@ def admin_required(fn):
 def user():
     """
     Responds with a list of users
+    TODO query string based on unassigned
+    TODO query string based on instructor or not
+    TODO query string based on admin or not
     """
 
     # TODO Build a dict based on query params and pass in as **kwargs into filter_by
