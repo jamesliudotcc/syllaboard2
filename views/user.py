@@ -20,20 +20,27 @@ user_blueprint = Blueprint("user_blueprint", __name__)
 def user():
     """
     Responds with a list of users
-    TODO query string based on unassigned
-    TODO query string based on instructor or not
-    TODO query string based on admin or not
+    resp = await fetch(`http://localhost:5000/user/?${qs.stringify({lacks_cohort: true})}`, {headers: { Authorization: `Bearer ${body.access_token}` } })
     """
+    filter_conditions = {}
 
-    # TODO Build a dict based on query params and pass in as **kwargs into filter_by
+    if request.args.get("lacks_cohort"):
+        filter_conditions["user_cohort"] = None
 
-    return [
-        {
-            "email": user.email,
-            "first_name": user.first_name,
-            "last_name": user.last_name,
-            "is_instructor": user.is_instructor,
-            "is_admin": user.is_admin,
-        }
-        for user in User.query.filter_by().all()
-    ]
+    for condition in ["is_admin", "is_instructor"]:
+        if request.args.get(condition):
+            filter_conditions[condition] = True
+
+    return {
+        "data": [
+            {
+                "id": user.id,
+                "email": user.email,
+                "first_name": user.first_name,
+                "last_name": user.last_name,
+                "is_instructor": user.is_instructor,
+                "is_admin": user.is_admin,
+            }
+            for user in User.query.filter_by(**filter_conditions).all()
+        ]
+    }

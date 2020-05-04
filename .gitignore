@@ -39,3 +39,7 @@ env
 # Dot env file (duh)
 .env
 app.db
+
+#
+*node_modules
+node-playground/yarn.lock

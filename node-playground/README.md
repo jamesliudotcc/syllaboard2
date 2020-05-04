@@ -18,7 +18,11 @@ resp = await fetch('http://localhost:5000/auth/login', {method: 'POST', headers:
 body = await resp.json() // You can only run .json() once, so save it. Coroutines. 🙄
 body.access_token # And you get the accees token
 
+resp = await fetch('http://localhost:5000/user/', {headers: { Authorization: `Bearer ${body.access_token}` } }) 
 
-post = (url, body) => (await fetch(url, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body)}))
+// Here's a nice shortcut:
+
+resp = await fetch('http://localhost:5000/auth/login', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({email: "james@jamesliu.cc", password: "umm..."})}) ; body = await resp.json() ; token = body.access_token 
+
 
 ```

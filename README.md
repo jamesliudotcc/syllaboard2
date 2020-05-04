@@ -55,10 +55,10 @@ flask db upgrade
   - [ ] Users
     - [ ] Create one time password
     - [ ] Create a celery task to wait 15 minutes and invalidate that pw
-  - [ ] Cohorts
-    - [ ] Create cohort
-    - [ ] Assign instructor to cohort
-    - [ ] Assign student to cohort
+  - [x] Cohorts
+    - [x] Create cohort
+    - [x] Assign instructor to cohort
+    - [x] Assign student to cohort
 
 - [ ] Student
   - [ ] Deliverable
@@ -67,7 +67,7 @@ flask db upgrade
     - [ ] Get pending deliverables (wishlist)
 
 - [ ] Organize these
-  - [ ] Cohort model created
+  - [x] Cohort model created
   - [ ] Admins model created
 
 - [ ] Cleanup
@@ -81,15 +81,6 @@ flask db upgrade
   - [ ] Build to a Docker image
   - [ ] Run with Docker Compose using a Postgres
 
-  **Really next** 
-
-- [ ] First user is always created admin. After, users can be made
+- [x] First user is always created admin. After, users can be made
   admin only by an admin. Duh.
-- [ ] Cohort create route (/cohort/ POST) receives a json likes so:
-```json
-{
-  instructors: [1, 2],
-  students: [3, 4, 5],
-}
-```
 - [ ] (/cohort GET) should be paginated.
