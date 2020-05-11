@@ -1,3 +1,12 @@
+Running using Docker:
+
+Edit `Dockerfile` to reflect where on your file system you put the repo. Then run these commands:
+
+```shell
+docker build -t syllaboard2-a .
+docker run -it --rm --port 5000:5000 syllaboard2-a
+```
+
 How to get the Postgres running (not currently used):
 
 ```
@@ -24,6 +33,8 @@ flask db upgrade
   - [x] Consider moving `app.py` to `app/__init__.py`
   - [x] Colocate models with blueprints
   - [x] Get rid of circular imports on init https://github.com/ltalirz/flask-sqlalchemy-circular-imports
+  - [ ] Tighten up Docker user permissions
+  - [ ] Write a Docker Compose file to get this working with Postgres.
 
 
 - [ ] Models
