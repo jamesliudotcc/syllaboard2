@@ -24,7 +24,13 @@ flask db migrate -m "users table"
 ```
 Run the migration:
 ```
-flask db upgrade
+flask db upgrade # <- Probably only do this step
+```
+
+Run the tests
+
+```
+pytest -W ignore::pytest.PytestDeprecationWarning
 ```
 
 - [ ] App Architecture
@@ -86,7 +92,8 @@ flask db upgrade
   - [ ] JSON for default errors instead of HTML
 
 - [ ] Testing
-  - [ ] Have tests https://tavern.readthedocs.io/en/latest/examples.html
+  - [x] Have tests https://tavern.readthedocs.io/en/latest/examples.html
+  - [ ] Write tests against other users.
 
 - [ ] Deploy
   - [ ] Build to a Docker image

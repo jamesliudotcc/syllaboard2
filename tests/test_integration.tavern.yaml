@@ -1,0 +1,37 @@
+test_name: Application root 404s
+
+stages:
+  - name: Request the application root, get a 404
+    request:
+      url: http://localhost:5000/
+      method: GET
+
+---
+
+test_name: Log in James Liu
+
+stages:
+  - name: Login
+    request:
+      url: http://localhost:5000/auth/login
+      json:
+        email: james@jamesliu.cc
+        password: password
+      method: POST
+      headers:
+        content-type: application/json
+    response:
+      status_code: 200
+      save:
+        json:
+          test_login_token: access_token
+
+  - name: Check the 'me' method works
+    request:
+      url: http://localhost:5000/auth/me
+      method: GET
+      headers:
+        Authorization: "Bearer {test_login_token:s}"
+    response:
+      status_code: 200
+   
