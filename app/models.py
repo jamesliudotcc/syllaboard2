@@ -26,6 +26,9 @@ class User(db.Model):
     # TODO Instructor should have a campus attached
     is_instructor = db.Column(db.Boolean(), nullable=False)
     user_cohort = db.relationship("Cohort", secondary=user_cohort, backref="users")
+    user_assignment_templates = db.relationship(
+        "Assignment_Template", backref="user", lazy=True
+    )
 
     def __repr__(self):
         return f"<User {self.email}, Instructor: {self.is_instructor} Admin: {self.is_admin}>"
@@ -43,6 +46,9 @@ class Cohort(db.Model):
     name = db.Column(db.String(64), nullable=False)
     start_date = db.Column(db.Date, nullable=False)
     campus = db.Column(db.String, nullable=False, server_default="Remote LA")
+    cohort_assignments = db.relationship(
+        "Cohort_Assignment", lazy=False, backref="cohort"
+    )
     # Time zone is an application concern, not DB
 
     def __repr__(self):
@@ -50,13 +56,30 @@ class Cohort(db.Model):
 
 
 # TODO Implement
-# class Cohort_Assignment(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
+class Cohort_Assignment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    start = db.Column(db.Date, nullable=False)
+    due = db.Column(db.Date, nullable=False)
+    template_id = db.Column(db.Integer, db.ForeignKey("assignment_template.id"))
+    cohort_id = db.Column(db.Integer, db.ForeignKey("cohort.id"))
+    # TODO connect to User_Assignment
 
 
-# class Assigment_Template(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
+class Assigment_Template(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), nullable=False)
+    detail = db.Column(db.UnicodeText, nullable=False)
+    version = db.Column(db.Integer, nullable=False, default=1)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+    cohort_assignments = db.relationship(
+        "Cohort_Assignment", lazy=True, backref=db.backref("template", lazy=False)
+    )
 
 
-# class User_Assigment(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
+class User_Assigment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    url = db.Column(db.String(128), nullable=False)
+    grade = db.Column(db.Integer, nullable=True)
+    student_comment = db.Column(db.UnicodeText, nullable=True)
+    # TODO connet to User
+    # TODO connect to CohortAssignment
