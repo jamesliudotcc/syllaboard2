@@ -17,6 +17,8 @@ user_cohort = db.Table(
 
 @dataclass
 class User(db.Model):
+    __tablename__ = "user"
+
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(64), index=True, unique=True, nullable=False)
     first_name = db.Column(db.String(64), nullable=False)
@@ -29,6 +31,7 @@ class User(db.Model):
     user_assignment_templates = db.relationship(
         "Assignment_Template", backref="user", lazy=True
     )
+    user_assignments = db.relationship("User_Assignment", backref="user", lazy=False)
 
     def __repr__(self):
         return f"<User {self.email}, Instructor: {self.is_instructor} Admin: {self.is_admin}>"
@@ -55,31 +58,39 @@ class Cohort(db.Model):
         return f"<Cohort {self.name} starting {self.start_date}>"
 
 
-# TODO Implement
-class Cohort_Assignment(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    start = db.Column(db.Date, nullable=False)
-    due = db.Column(db.Date, nullable=False)
-    template_id = db.Column(db.Integer, db.ForeignKey("assignment_template.id"))
-    cohort_id = db.Column(db.Integer, db.ForeignKey("cohort.id"))
-    # TODO connect to User_Assignment
+class Assignment_Template(db.Model):
+    __tablename__ = "assignment_template"
 
-
-class Assigment_Template(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), nullable=False)
     detail = db.Column(db.UnicodeText, nullable=False)
     version = db.Column(db.Integer, nullable=False, default=1)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
     cohort_assignments = db.relationship(
-        "Cohort_Assignment", lazy=True, backref=db.backref("template", lazy=False)
+        "Cohort_Assignment",
+        lazy=True,
+        backref=db.backref("assignment_template", lazy=True),
     )
 
 
-class User_Assigment(db.Model):
+# TODO Implement
+class Cohort_Assignment(db.Model):
+    __tablename__ = "cohort_assignment"
+
+    id = db.Column(db.Integer, primary_key=True)
+    start = db.Column(db.Date, nullable=False)
+    due = db.Column(db.Date, nullable=False)
+    template_id = db.Column(db.Integer, db.ForeignKey("assignment_template.id"))
+    cohort_id = db.Column(db.Integer, db.ForeignKey("cohort.id"))
+    cohort_assignment_user_assignments = db.relationship(
+        "User_Assignment", backref="cohort_assignment", lazy=True
+    )
+
+
+class User_Assignment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     url = db.Column(db.String(128), nullable=False)
     grade = db.Column(db.Integer, nullable=True)
     student_comment = db.Column(db.UnicodeText, nullable=True)
-    # TODO connet to User
-    # TODO connect to CohortAssignment
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+    cohort_assignmet_id = db.Column(db.Integer, db.ForeignKey("cohort_assignment.id"))
