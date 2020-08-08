@@ -20,7 +20,7 @@ flask db init
 ```
 Create the initial migration:
 ```
-flask db migrate -m "users table"
+flask db migrate -m "users table" (if no migrations exist)
 ```
 Run the migration:
 ```

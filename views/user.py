@@ -22,14 +22,15 @@ def user():
     Responds with a list of users
     resp = await fetch(`http://localhost:5000/user/?${qs.stringify({lacks_cohort: true})}`, {headers: { Authorization: `Bearer ${body.access_token}` } })
     """
-    filter_conditions = {}
+
+    filter_conditions = {
+        condition: True
+        for condition in ["is_admin", "is_instructor"]
+        if request.args.get(condition)
+    }
 
     if request.args.get("lacks_cohort"):
         filter_conditions["user_cohort"] = None
-
-    for condition in ["is_admin", "is_instructor"]:
-        if request.args.get(condition):
-            filter_conditions[condition] = True
 
     return {
         "data": [

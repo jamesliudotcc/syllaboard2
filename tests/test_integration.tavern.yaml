@@ -7,7 +7,6 @@ stages:
       method: GET
 
 ---
-
 test_name: Log in James Liu
 
 stages:
@@ -34,4 +33,44 @@ stages:
         Authorization: "Bearer {test_login_token:s}"
     response:
       status_code: 200
-   
+
+---
+test_name: Cohorts Checks
+
+stages:
+  - name: Login
+    request:
+      url: http://localhost:5000/auth/login
+      json:
+        email: james@jamesliu.cc
+        password: password
+      method: POST
+      headers:
+        content-type: application/json
+    response:
+      status_code: 200
+      save:
+        json:
+          test_login_token: access_token
+
+  - name: Check can read cohorts
+    request:
+      url: http://localhost:5000/cohort/
+      method: GET
+      headers:
+        Authorization: "Bearer {test_login_token:s}"
+    response:
+      status_code: 200
+
+  - name: Check can create cohorts
+    request:
+      url: http://localhost:5000/cohort/
+      method: POST
+      headers:
+        Authorization: "Bearer {test_login_token:s}"
+        content-type: application/json
+      json:
+        name: "WDI 20"
+        users: [3, 4, 5, 6]
+    response:
+      status_code: 200

@@ -1,4 +1,4 @@
-from users import users
+from .users import users
 
 import requests
 
